@@ -123,7 +123,7 @@ if __name__ == "__main__":
             temperature, humidity, pressure = get_sensor_readings()
 
             # despues los publicamos en los campos correspondientes del canal de ThingSpeak
-            publish_mqtt(MQTT_TOPIC_TEMP, str(temperature))
+            publish_mqtt(topic=MQTT_TOPIC_TEMP, message=str(temperature))
             publish_mqtt(topic=MQTT_TOPIC_HUMI, message=str(humidity))
             publish_mqtt(topic=MQTT_TOPIC_PRES, message=str(pressure))
 
