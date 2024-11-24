@@ -9,11 +9,15 @@ import config
 import time
 
 # Constants for MQTT
+# Estas constantes nos sirven para publicar los datos en los campos correspondientes
+# del canal de ThingSpeak que hemos creado.
 MQTT_TOPIC_TEMP = f"channels/{config.mqtt_channerId}/publish/fields/field1"
-MQTT_TOPIC_HUM = "pico/humidity"
-MQTT_TOPIC_PRES = "pico/pressure"
+MQTT_TOPIC_HUMI = f"channels/{config.mqtt_channerId}/publish/fields/field2"
+MQTT_TOPIC_PRES = f"channels/{config.mqtt_channerId}/publish/fields/field3"
 
 # MQTT parameters
+# Son constantes que nos sirven para conectarnos al servidor MQTT de ThingSpeak.
+# Estos datos los hemos obtenido al crear el canal de ThingSpeak.
 MQTT_SERVER = config.mqtt_server
 MQTT_PORT = config.mqtt_port
 MQTT_USER = config.mqtt_username
@@ -23,11 +27,13 @@ MQTT_KEEPALIVE = 7200
 MQTT_SSL = False
 
 # Initialize I2C communication
+# Crear un objetos de la clase I2C para comunicarnos con el sensor BME280 y con la pantalla OLED.
 i2c = I2C(id=0, scl=Pin(5), sda=Pin(4))
 
-# init oled
+# init oled display 64x128
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
 
+# init BME280 sensor
 bme = BME280.BME280(i2c=i2c)
 
 
@@ -94,22 +100,39 @@ def publish_mqtt(topic, message):
 
 if __name__ == "__main__":
     display.fill(0)
+
     init_wifi(config.wifi_ssid, config.wofi_password)
     display.text("Connected to WiFi", 0, 0)
+    display.text("IP: " + str(wlan.ifconfig()[0]), 0, 10)
     display.show()
+
     sleep(1)
+
     client = connect_mqtt()
-    display.text("Connected to MQTT", 0, 10)
+    display.text("Connected to MQTT", 0, 20)
+    display.text("Server: " + str(MQTT_SERVER), 0, 30)
     display.show()
+
     sleep(1)
+
     display.fill(0)
 
     while True:
         try:
-            temerature, humidity, pressure = get_sensor_readings()
+            # primero obtenemos los datos
+            temperature, humidity, pressure = get_sensor_readings()
 
-            publish_mqtt(MQTT_TOPIC_TEMP, str(temerature))
-            display.text("Temp: " + str(temerature), 0, 0)
+            # despues los publicamos en los campos correspondientes del canal de ThingSpeak
+            publish_mqtt(MQTT_TOPIC_TEMP, str(temperature))
+            publish_mqtt(topic=MQTT_TOPIC_HUMI, message=str(humidity))
+            publish_mqtt(topic=MQTT_TOPIC_PRES, message=str(pressure))
+
+            # mostramos los datos en la pantalla OLED
+            display.text("Data sent to MQTT", 0, 0)
+            display.text("Temp: " + str(temperature), 0, 20)
+            display.text("Humi: " + str(humidity), 0, 30)
+            display.text("Pres: " + str(pressure), 0, 40)
+
             display.show()
         except Exception as e:
             print("An error occurred:", e)
