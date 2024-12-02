@@ -157,4 +157,4 @@ if __name__ == "__main__":
 
         display.show()
 
-        sleep(60 * 5)
+        sleep(60 * 5) # 5 minutos
