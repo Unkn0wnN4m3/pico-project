@@ -141,6 +141,17 @@ if __name__ == "__main__":
         # mostramos los datos en la pantalla OLED
         display.text("Sensor data:", 0, 0)
         display.text("Temp: " + str(temperature), 0, 20)
+
+        # Es una propiedad de la case BME280 que nos da la temperatura en grados Celsius.
+        # como un "string"
+        print("Temperature: ", temperature)
+        # Obtenemos los datos como int con dos digitos para el entero y dos para el decimal
+        # Lo recibimos todo junto sin la sepeación de los decimales.
+        print("datos crudos:", bme.read_temperature())
+
+        # Obtenemos los datos como bits. Estos son los datos "crudos" que nos da el sensor.
+        print("datos reales crudos:", bme.read_raw_temp())
+
         display.text("Humi: " + str(humidity), 0, 30)
         display.text("Pres: " + str(pressure), 0, 40)
 
