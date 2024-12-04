@@ -24,10 +24,10 @@ def btn_callback(pin):
     display.poweron()
     display.fill(0)
 
-    display.text("Data:", 0, 0, 1)
-    display.text("Temp" + str(bme.values[0]), 0, 20, 1)
-    display.text("Temp" + str(bme.values[1]), 0, 30, 1)
-    display.text("Temp" + str(bme.values[2]), 0, 40, 1)
+    display.text("Sensor data:", 0, 0, 1)
+    display.text("Temp: " + str(bme.values[0]), 0, 20, 1)
+    display.text("Pres: " + str(bme.values[1]), 0, 30, 1)
+    display.text("Humi: " + str(bme.values[2]), 0, 40, 1)
     
     display.show()
     sleep(5)
