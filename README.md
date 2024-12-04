@@ -58,3 +58,5 @@ At the end in Pico W there should be only these files:
 And with that, you're ready. Now to test the code, you just have to write `mpremote run main.py`
 
 ![pico w real](./media/pico-project_live.jpg)
+
+> NOTE: This image was shot before interruptions implementation. **The correct wiring is at top of this document**. Is the _fritzing_ one.
