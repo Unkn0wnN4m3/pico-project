@@ -25,6 +25,17 @@ Project for the microprocessor course. This project consists of using the Raspbe
 
 ![pico w fritzing](./media/pico-project_bb.png)
 
+> I2C pins:  
+> SDA -> GP4 (pin 6)  
+> SCL -> GP5 (pin 7)  
+>
+> Push button pins:  
+> GP11 (pin 15) and GND (pin 13)
+> 
+> Power out pins:  
+> 3.3V -> pin 36  
+> GND -> pin 38
+
 ## Setup
 
 create a file called `config.py` at the root of the project with the following values (MQTT related variables are obtained from Thingspeak).
